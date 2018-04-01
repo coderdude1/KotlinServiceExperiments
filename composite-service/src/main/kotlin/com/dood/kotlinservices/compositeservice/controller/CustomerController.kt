@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CustomerController {
     @GetMapping(value = "/customer/{id}")
-    //expresion body
+    //expression body
     fun getCustomer(@PathVariable id: Int) = Customer(id, "customer $id")
 }
