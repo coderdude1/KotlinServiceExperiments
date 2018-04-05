@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class CustomerController {
+class CompositeController {
     @GetMapping(value = "/customer/{id}")
     //function body now, directly using ResponseEntity to set httpStatus per book
     fun getCustomer(@PathVariable id: Int): ResponseEntity<Customer> {
