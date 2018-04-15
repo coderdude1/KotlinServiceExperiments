@@ -27,3 +27,6 @@ https://medium.com/@rhwolniewicz/building-a-rest-service-with-kotlin-spring-boot
 
 Swagger currently has issues with WebFlux https://github.com/springfox/springfox/issues/1773
 support soon
+
+#Notes
+1.  Swagger 2.9 will add webflux support

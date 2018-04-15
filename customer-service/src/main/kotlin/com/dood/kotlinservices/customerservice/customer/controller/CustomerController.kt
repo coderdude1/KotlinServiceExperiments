@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 //TODO rewrite this using router
 @RestController
+@RequestMapping("/api")
 class CompositeController {
 
     @Autowired
@@ -17,15 +19,19 @@ class CompositeController {
 
     @GetMapping(value = "/customer/{id}")
     //function body now, directly using ResponseEntity to set httpStatus per book
-    fun getCustomer(@PathVariable id: String): ResponseEntity<Customer> {
-        return ResponseEntity(Customer(id, "Customer Entity $id"), HttpStatus.OK)
+    fun getCustomer(@PathVariable id: String): Mono<Customer> {
+        return customerService.getCustomer(id)
     }
+
+    @GetMapping()
+    fun getAllCustomers(): Flux<Customer> = customerService.getAllCustomers()
+
 
     @PostMapping(value = "/customer")
     fun createCustomer(@RequestParam customer: Customer): Mono<Customer> =
             customerService.saveCustomer(customer)
 
-    @PostMapping(value = "/init")
+    @PostMapping(value = "/init/{numOfCustomers}")
     fun initCustomers(@PathVariable numOfCustomers: Int) =
             customerService.init(numOfCustomers)
 }

@@ -2,9 +2,6 @@ package com.dood.kotlinservices.customerservice.customer.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import reactor.core.publisher.Flux
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository
-import org.springframework.stereotype.Repository
 
 
 /**
@@ -15,7 +12,7 @@ import org.springframework.stereotype.Repository
  *
  * class vs data class?
  */
-@Document
+@Document(collection="customers")
 data class Customer(@Id var id: String?, val name: String = "", val telephone: Telephone? = null) {
     //nested vs inner (requires inner keyword).  does not have access to Customer props
     //same as a static nested class in java and jackson is not set ablut nullable props
@@ -24,8 +21,8 @@ data class Customer(@Id var id: String?, val name: String = "", val telephone: T
 
 //I might extract this into its own file.
 //also ReactiveMongoRepo vs ReactiveCrudRepository vs AbstractReactiveMongo
-//
-@Repository
-interface CustomerRepository : ReactiveMongoRepository<Customer, String> {
-    fun findByName(name: String): Flux<Customer>
-}
+//I did not have luck getting this to work yet, gonna extract it out to a class instead
+//@Repository
+//interface CustomerRepository : ReactiveMongoRepository<Customer, String> {
+//    fun findByName(name: String): Flux<Customer>
+//}
