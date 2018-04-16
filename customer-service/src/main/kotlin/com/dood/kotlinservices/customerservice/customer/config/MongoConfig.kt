@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Configuration
 @EnableReactiveMongoRepositories(basePackages=["com.dood.kotlinservices.customerservice.customer.repository"])
 class MongoConfig : AbstractReactiveMongoConfiguration() {
+    @Bean
     override fun reactiveMongoClient(): MongoClient {
         return MongoClients.create()
     }

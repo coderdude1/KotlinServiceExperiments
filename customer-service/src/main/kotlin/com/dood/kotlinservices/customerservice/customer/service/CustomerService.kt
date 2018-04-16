@@ -17,8 +17,9 @@ class CustomerService(val customerRepository: CustomerRepository) {
             customers.add(createCustomer(i.toString()))
         }
         try {
-            val saved = customerRepository.saveAll(customers)
-            println(saved)
+            val saved = customerRepository.saveAll(customers).blockFirst()
+//            saved.map({it -> println(it.name)})
+//            println(saved)
         } catch (e: Exception) {
             println(e)
         }
