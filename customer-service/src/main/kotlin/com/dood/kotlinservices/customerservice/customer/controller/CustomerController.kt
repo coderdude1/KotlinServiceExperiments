@@ -26,7 +26,6 @@ class CompositeController {
     @GetMapping()
     fun getAllCustomers(): Flux<Customer> = customerService.getAllCustomers()
 
-
     @PostMapping(value = "/customer")
     fun createCustomer(@RequestParam customer: Customer): Mono<Customer> =
             customerService.saveCustomer(customer)

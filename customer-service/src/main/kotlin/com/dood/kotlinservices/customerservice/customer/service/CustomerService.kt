@@ -9,20 +9,19 @@ import reactor.core.publisher.Mono
 
 @Service
 class CustomerService(val customerRepository: CustomerRepository) {
-
+/*
+Intellij warns of unassigned Mono/Flux instance and after reading a SO post to get the repository save to work
+I think this might be important.  Research
+ */
     //by default return type is Unit
     fun init(numberOfCustomers: Int) {
-        val customers: MutableList<Customer> = mutableListOf()
+        val customers: MutableList<Customer> = mutableListOf() //bet I can do this better with kotlin, maybe a stream
         for (i in 1..numberOfCustomers) {
             customers.add(createCustomer(i.toString()))
         }
-        try {
-            val saved = customerRepository.saveAll(customers).blockFirst()
-//            saved.map({it -> println(it.name)})
-//            println(saved)
-        } catch (e: Exception) {
-            println(e)
-        }
+    //blockfirst() vs blockLast?  this does get stuff to persist since I don't return the flux?
+    //reearch if returning a flux can remove the block
+        val saved = customerRepository.saveAll(customers).blockFirst()
     }
 
     fun getCustomer(id: String): Mono<Customer> = customerRepository.findById(id)

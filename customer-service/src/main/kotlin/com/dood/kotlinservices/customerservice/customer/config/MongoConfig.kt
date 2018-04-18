@@ -18,7 +18,9 @@ class MongoConfig : AbstractReactiveMongoConfiguration() {
         return MongoClients.create()
     }
 
-//    all the examples used this, might be older version of AbstractReactiveMongoClient?
+//    all the examples used this, might be older version of AbstractReactiveMongoClient?  I think this can
+    //be used for a non-reactive repo if I want, so I might mix stuff and expose some of each (like making
+//    a parallel call from composite to 2 non-composite to a non-webflux endpoint vs a flux endpoint
     @Bean
     fun mongoClient(): MongoClient {
         return MongoClients.create()
