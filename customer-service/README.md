@@ -34,3 +34,6 @@ support soon
 # Something to research and understand better
 stuff was not persisting until I added a block on the save call in the service call to the repository.
 https://stackoverflow.com/questions/47238418/spring-webflux-mongodb-document-is-not-saved-into-database
+
+the id property on the Customer document is nullable.  should I make it not nullable and just use the mongo 
+Object.getId thingy and inject it on construction?
