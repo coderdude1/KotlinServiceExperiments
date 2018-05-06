@@ -1,43 +1,63 @@
 package com.dood.kotlinservices.orderservice.service
 
+import com.dood.kotlinservices.orderservice.extensions.getRandomElement
+import com.dood.kotlinservices.orderservice.extensions.random
 import com.dood.kotlinservices.orderservice.model.LineItem
 import com.dood.kotlinservices.orderservice.model.Order
-import com.dood.kotlinservices.orderservice.repository.OrderRepository
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.dood.kotlinservices.orderservice.repository.ReactiveOrderRepository
+import mu.KLogging
 import org.springframework.stereotype.Service
-import java.util.concurrent.ThreadLocalRandom
 
 @Service
-class OrderService(val orderRepository: OrderRepository) {
-    val logger: Logger = LoggerFactory.getLogger(OrderService::class.java)
-    val itemNames: List<String> = listOf("car", "beer", "lamp", "notebook", "snowmobile", "dog", "pencil")
+class OrderService(val reactiveOrderRepository: ReactiveOrderRepository, val orderRepository: ReactiveOrderRepository) {
+    companion object : KLogging() //make it part of this class, companion makes it static
 
-    //easy way to generate randoms Ints wwith a range
-    fun ClosedRange<Int>.random() =
-            ThreadLocalRandom.current().nextInt(endInclusive - start) + start
+    val itemNames: List<String> = listOf("car", "beer", "lamp", "notebook", "snowmobile", "dog", "pencil", "Blorple",
+            "NarklFrak", "stereo", "tree", "flower", "fire extinguisher", "more dogs")
 
-    fun ClosedRange<Double>.random() =
-            ThreadLocalRandom.current().nextDouble(endInclusive - start) + start
-
-    fun init(numberOfOrdersPerCustomer: Number, customerIds: List<String>) {
-
+    /**
+     * This one is really just to validate the creation of orders with fake customerIds
+     */
+    fun createFakeCustomerOrders() {
+        val customerIds = List(randomNumberOfCustomerIds()) { java.util.UUID.randomUUID().toString() }
+        createCustomerOrders(customerIds)
     }
 
-    fun createOrder(customerId: String) {
-        val lineItems: MutableList<LineItem> = mutableListOf() //bet I can do this better with kotlin, maybe a stream
-        val numOfLineItems: Int = (1..10).random()
-        for (i in 1..numOfLineItems) {
-            lineItems.add(createLineItem((1..3).random(), i.toString()))
+//    fun getCustomerOrders(customerid: String): List<Order> {
+//        reactiveOrderRepository.
+//    }
+
+    /**
+     * Use this one when called from the composite to use real customerIds that are created
+     * after creating a bunch of customers
+     */
+    fun createCustomerOrders(customerIds: List<String>) {
+//        logger.info { "creating ${customerIds.size} customer orders" }
+        val orders: MutableList<Order> = mutableListOf()
+        customerIds.forEach { customerId -> orders.add(createOrder(customerId)) }
+        orderRepository.saveAll(orders) //could not get reactive one to work, even with block()
+    }
+
+    fun createOrder(customerId: String): Order {
+        val lineItems = MutableList(randomNumberOfItems()) { index ->
+            createLineItem(randomItemQuantity(), index.toString())
         }
         val order = Order(customerId = customerId, lineItems = lineItems)
+        logger.info { "created and persisted order: $order" } //repo.save().block does not work, nor does just .save due to flux repo
+        return order
     }
 
-    fun createLineItem(quantity: Int, itemName: String): LineItem {
-        return LineItem(quantity, itemName, itemCost = (0.1..1000.0).random())
-    }
+    fun createLineItem(quantity: Int, itemName: String): LineItem =
+            LineItem(quantity, getItemName(), itemCost = getItemCost())
 
-    fun getItemName(): String {
-        return itemNames[((0..itemNames.size).random())] //look into list.shuffled
-    }
+    //research naming conventions for lambdas
+    fun randomItemQuantity(): Int = (1..20).random()
+
+    fun randomNumberOfItems(): Int = (1..10).random()
+
+    fun randomNumberOfCustomerIds(): Int = (1..1000).random()
+
+    fun getItemName(): String = itemNames.getRandomElement() //note I have to import this since it is defined outside of this file
+
+    fun getItemCost(): Double = (0.1..1000.0).random()
 }

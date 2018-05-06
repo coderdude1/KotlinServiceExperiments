@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.20'
+        kotlinVersion = '1.2.41'
         springBootVersion = '2.0.1.RELEASE'
     }
     repositories {
@@ -44,9 +44,16 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
 //    compile('org.springframework.boot:spring-boot-starter-security') //until I get core stuff working
     compile('org.springframework.boot:spring-boot-starter-webflux')
+
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
+
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
 
     compile "org.codehaus.groovy:groovy-all:2.4.13"
 

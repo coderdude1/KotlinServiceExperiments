@@ -12,7 +12,7 @@ TODO.
 
  */
 @Document
-data class Order(@Id var id: Id?, val customerId: String, val lineItems: List<LineItem>) {
+data class Order(@Id var id: String? = null, val customerId: String, val lineItems: List<LineItem>) {
     //not sure the below will work unless I make it a mutable collection.  figure it out later
 //    fun addItem(item: LineItem) = lineItems.add(item)
 //    fun removeItem()
