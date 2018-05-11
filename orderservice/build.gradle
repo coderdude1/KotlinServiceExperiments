@@ -60,6 +60,9 @@ dependencies {
     testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
+    //eventually add spek http://spekframework.org/docs/latest/#_gradle
+
+    //got these from spock example
     testRuntime "net.bytebuddy:byte-buddy:1.6.5"          // allows mocking of classes (in addition to interfaces)
     testRuntime "org.objenesis:objenesis:2.5.1"    // allows mocking of classes without default constructor (together with CGLIB)
 

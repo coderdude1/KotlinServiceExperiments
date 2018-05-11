@@ -23,6 +23,6 @@ data class Customer(@Id var id: String?, val name: String = "", val telephone: T
 //also ReactiveMongoRepo vs ReactiveCrudRepository vs AbstractReactiveMongo
 //I did not have luck getting this to work yet, gonna extract it out to a class instead
 //@Repository
-//interface CustomerRepository : ReactiveMongoRepository<Customer, String> {
+//interface ReactiveCustomerRepository : ReactiveMongoRepository<Customer, String> {
 //    fun findByName(name: String): Flux<Customer>
 //}
